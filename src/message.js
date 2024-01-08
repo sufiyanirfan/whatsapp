@@ -23,30 +23,23 @@ module.exports = async (req, res) => {
 
     // Process message with OpenAI's GPT API and return response
     const response = await chatCompletion(message);
- 
-    
+
     // Define the maximum character limit per message
     const maxCharLimit = 1580;
-    
-    // Check if the response exceeds the maximum character limit
-    if (response.length <= maxCharLimit) {
-      // If the response is within the limit, send a single TwiML message
-      console.log(response);
-      if (response) {
-        twiml.message(response);
-      }
-    } else {
-      // If the response exceeds the limit, break it into chunks and send multiple TwiML messages
-      let start = 0;
-      while (start < response.length) {
-        const chunk = response.substring(start, start + maxCharLimit);
-        console.log(chunk);
-        twiml.message(chunk);
-        start += maxCharLimit;
-      }
-    }
-    
 
+    // If the response is within the limit, send a single TwiML message
+    if (response && response.length > maxCharLimit) {
+      // If the response exceeds the limit, truncate it to 1580 characters
+      const truncatedResponse = response.substring(0, maxCharLimit);
+      console.log("res coming");
+      console.log(truncatedResponse);
+      twiml.message(truncatedResponse);
+    } else if (response) {
+      // If the response is within the limit, send the entire response
+      console.log("res coming");
+      console.log(response);
+      twiml.message(response);
+    }
 
     // Send the response back to Twilio
     res.set("Content-Type", "text/xml");
