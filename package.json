@@ -2,7 +2,7 @@
   "name": "chatgpt-whatsapp",
   "version": "1.0.0",
   "description": "WhatsApp bot uses OpenAI's GPT and Twilio Messaging API to respond to user inputs",
-  "main": "app.js",
+  "main": "index.js",
   "author": "Prakhar Prakash Bhardwaj",
   "license": "MIT",
   "private": false,
