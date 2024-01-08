@@ -8,8 +8,7 @@ module.exports = async (req, res) => {
     let message;
 
     twilio(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN); // Create a Twilio client
-    console.log(config.TWILIO_ACCOUNT_SID)
-    console.log(config.TWILIO_AUTH_TOKEN)
+
     const twiml = new twilio.twiml.MessagingResponse(); // Create a new Twilio Response object and send a message
 
     // Check if the request is a text message or audio file
@@ -24,8 +23,30 @@ module.exports = async (req, res) => {
 
     // Process message with OpenAI's GPT API and return response
     const response = await chatCompletion(message);
-    console.log(response)
-    twiml.message(response);
+ 
+    
+    // Define the maximum character limit per message
+    const maxCharLimit = 1580;
+    
+    // Check if the response exceeds the maximum character limit
+    if (response.length <= maxCharLimit) {
+      // If the response is within the limit, send a single TwiML message
+      console.log(response);
+      if (response) {
+        twiml.message(response);
+      }
+    } else {
+      // If the response exceeds the limit, break it into chunks and send multiple TwiML messages
+      let start = 0;
+      while (start < response.length) {
+        const chunk = response.substring(start, start + maxCharLimit);
+        console.log(chunk);
+        twiml.message(chunk);
+        start += maxCharLimit;
+      }
+    }
+    
+
 
     // Send the response back to Twilio
     res.set("Content-Type", "text/xml");

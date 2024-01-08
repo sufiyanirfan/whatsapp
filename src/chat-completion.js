@@ -26,7 +26,6 @@ module.exports = async (message) => {
       })
     });
     const result = await response.json();
-    console.log(result);
     // const response = await fetch("https://flowiseai-railway-production-6341.up.railway.app/api/v1/prediction/ec83b091-4bbe-48ad-b164-2786876df57f", {
     //   method: "POST",
     //   headers: {
