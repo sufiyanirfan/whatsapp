@@ -35,7 +35,7 @@ module.exports = async (message) => {
     });
     const result = await response.json();
     console.log(result);
-    return result;
+    return result.text;
     // return result.translatedText;
   } catch (e) {
     console.log(e);
